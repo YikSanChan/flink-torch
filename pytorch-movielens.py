@@ -14,16 +14,24 @@ from torch import nn
 # In[2]:
 
 
-n_users, n_items = 943,1682
+n_users, n_items = 943, 1682
 BATCH_SIZE = 32
 
 
 # In[3]:
 
 
-COLS = ['user_id', 'movie_id', 'rating', 'timestamp']
-train_data = pd.read_csv("ml-100k/u1.base", sep='\t', names=COLS).drop(columns=['timestamp']).astype(int)
-test_data = pd.read_csv("ml-100k/u1.test", sep='\t', names=COLS).drop(columns=['timestamp']).astype(int)
+COLS = ["user_id", "movie_id", "rating", "timestamp"]
+train_data = (
+    pd.read_csv("ml-100k/u1.base", sep="\t", names=COLS)
+    .drop(columns=["timestamp"])
+    .astype(int)
+)
+test_data = (
+    pd.read_csv("ml-100k/u1.test", sep="\t", names=COLS)
+    .drop(columns=["timestamp"])
+    .astype(int)
+)
 
 
 # In[4]:
@@ -40,7 +48,7 @@ class MatrixFactorization(nn.Module):
         super().__init__()
         self.user_factors = nn.Embedding(n_users, n_factors)
         self.item_factors = nn.Embedding(n_items, n_factors)
-        
+
     def forward(self, user, item):
         user = torch.LongTensor(user) - 1
         item = torch.LongTensor(item) - 1
@@ -49,7 +57,8 @@ class MatrixFactorization(nn.Module):
         assert x.shape == user.shape
         return x * 5
 
-model = MatrixFactorization(n_users,n_items)
+
+model = MatrixFactorization(n_users, n_items)
 print(model)
 
 
@@ -66,7 +75,7 @@ loss_fn = nn.L1Loss()
 def train(data, model, loss_fn, optimizer):
     size = len(data)
     for batch in range(len(data) // BATCH_SIZE):
-        df = train_data.sample(frac = BATCH_SIZE / len(data))
+        df = train_data.sample(frac=BATCH_SIZE / len(data))
         users = df.user_id.values
         items = df.movie_id.values
         targets = torch.FloatTensor(df.rating.values)
@@ -79,7 +88,7 @@ def train(data, model, loss_fn, optimizer):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        
+
         if batch % 500 == 0:
             loss_val, current = loss.item(), batch * len(df)
             print(f"loss: {loss_val:>7f}  [{current:>5d}/{size:>5d}]")
@@ -114,7 +123,11 @@ model.load_state_dict(torch.load("model.pth"))
 
 model.eval()
 sample_record = test_data.iloc[0]
-x_user, x_item, y = sample_record["user_id"], sample_record["movie_id"], sample_record["rating"]
+x_user, x_item, y = (
+    sample_record["user_id"],
+    sample_record["movie_id"],
+    sample_record["rating"],
+)
 
 
 # In[13]:
@@ -123,4 +136,3 @@ x_user, x_item, y = sample_record["user_id"], sample_record["movie_id"], sample_
 with torch.no_grad():
     pred = model([x_user], [x_item])
     print(f'Predicted: "{pred}", Actual: "{y}"')
-
