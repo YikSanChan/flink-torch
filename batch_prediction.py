@@ -4,7 +4,7 @@ from pyflink.table.udf import udf
 
 import torch
 
-from modeldef import MatrixFactorization
+from model_def import MatrixFactorization
 
 # Load model
 

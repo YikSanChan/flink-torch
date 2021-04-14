@@ -10,7 +10,7 @@ import pandas as pd
 import torch
 from torch import nn
 
-from modeldef import MatrixFactorization
+from model_def import MatrixFactorization
 
 
 # In[2]:
