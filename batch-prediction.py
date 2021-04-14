@@ -17,15 +17,15 @@ print(model)
 
 
 @udf(result_type=DataTypes.DOUBLE())
-def add(i, j):
-    return torch.Tensor([i]).item() + torch.Tensor([j]).item()
+def predict(i, j):
+    return model([i], [j]).item()
 
 
 settings = EnvironmentSettings.new_instance().use_blink_planner().build()
 exec_env = StreamExecutionEnvironment.get_execution_environment()
 t_env = StreamTableEnvironment.create(exec_env, environment_settings=settings)
 
-t_env.create_temporary_function("add", add)
+t_env.create_temporary_function("predict", predict)
 
 SOURCE_DDL = """
 CREATE TABLE source (
@@ -52,5 +52,5 @@ CREATE TABLE sink (
 t_env.execute_sql(SOURCE_DDL)
 t_env.execute_sql(SINK_DDL)
 t_env.execute_sql(
-    "INSERT INTO sink SELECT add(user_id, movie_id) FROM source"
+    "INSERT INTO sink SELECT PREDICT(user_id, movie_id) FROM source"
 ).wait()
