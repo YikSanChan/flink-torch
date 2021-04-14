@@ -1,4 +1,4 @@
-# Flink ML Batch Prediction
+# Flink Torch
 
 ## PyTorch Movielens
 
