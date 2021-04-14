@@ -16,9 +16,9 @@ print(model)
 # Define UDF
 
 
-@udf(result_type=DataTypes.INT(), func_type="pandas")
+@udf(result_type=DataTypes.DOUBLE())
 def add(i, j):
-    return i + j
+    return torch.Tensor([i]).item() + torch.Tensor([j]).item()
 
 
 settings = EnvironmentSettings.new_instance().use_blink_planner().build()
@@ -43,7 +43,7 @@ CREATE TABLE source (
 
 SINK_DDL = """
 CREATE TABLE sink (
-    a INT
+    a DOUBLE
 ) WITH (
     'connector' = 'print'
 )
