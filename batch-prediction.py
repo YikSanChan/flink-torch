@@ -2,7 +2,16 @@ from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import *
 from pyflink.table.udf import udf
 
+import torch
+
+from modeldef import MatrixFactorization
+
 # Load model
+
+n_users, n_items = 943, 1682
+model = MatrixFactorization(n_users, n_items)
+model.load_state_dict(torch.load("model.pth"))
+print(model)
 
 # Define UDF
 
@@ -28,7 +37,7 @@ CREATE TABLE source (
     'connector' = 'filesystem',
     'format' = 'csv',
     'csv.field-delimiter' = '\t',
-    'path' = '../ml-100k/u1.test'
+    'path' = 'ml-100k/u1.test'
 )
 """
 
