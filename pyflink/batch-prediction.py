@@ -6,9 +6,11 @@ from pyflink.table.udf import udf
 
 # Define UDF
 
+
 @udf(result_type=DataTypes.INT(), func_type="pandas")
 def add(i, j):
-  return i + j
+    return i + j
+
 
 settings = EnvironmentSettings.new_instance().use_blink_planner().build()
 exec_env = StreamExecutionEnvironment.get_execution_environment()
