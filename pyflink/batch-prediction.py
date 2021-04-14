@@ -26,7 +26,7 @@ CREATE TABLE source (
     'connector' = 'filesystem',
     'format' = 'csv',
     'csv.field-delimiter' = '\t',
-    'path' = 'ml-100k/u1.test'
+    'path' = '../ml-100k/u1.test'
 )
 """
 
