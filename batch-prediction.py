@@ -17,8 +17,8 @@ print(model)
 
 
 @udf(result_type=DataTypes.DOUBLE())
-def predict(i, j):
-    return model([i], [j]).item()
+def predict(user, item):
+    return model([user], [item]).item()
 
 
 settings = EnvironmentSettings.new_instance().use_blink_planner().build()
@@ -43,7 +43,7 @@ CREATE TABLE source (
 
 SINK_DDL = """
 CREATE TABLE sink (
-    a DOUBLE
+    prediction DOUBLE
 ) WITH (
     'connector' = 'print'
 )
