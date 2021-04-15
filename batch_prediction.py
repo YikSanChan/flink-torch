@@ -32,8 +32,12 @@ CREATE TABLE sink (
 )
 """
 
+TRANSFORM_DML = """
+INSERT INTO sink
+SELECT PREDICT(user_id, movie_id)
+FROM source
+"""
+
 t_env.execute_sql(SOURCE_DDL)
 t_env.execute_sql(SINK_DDL)
-t_env.execute_sql(
-    "INSERT INTO sink SELECT PREDICT(user_id, movie_id) FROM source"
-).wait()
+t_env.execute_sql(TRANSFORM_DML).wait()
