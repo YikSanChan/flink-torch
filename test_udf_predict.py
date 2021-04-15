@@ -1,4 +1,5 @@
 from batch_prediction import predict
 
 
-def test_predict()
+def test_predict():
+    pass

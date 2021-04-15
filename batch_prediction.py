@@ -1,22 +1,7 @@
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import *
-from pyflink.table.udf import udf
 
-import torch
-
-from model_def import MatrixFactorization
-
-# Load model
-
-# Define UDF
-
-@udf(result_type=DataTypes.DOUBLE())
-def predict(user, item):
-    n_users, n_items = 943, 1682
-    model = MatrixFactorization(n_users, n_items)
-    model.load_state_dict(torch.load("model.pth"))
-    # print(model)
-    return model([user], [item]).item()
+from udf_def import predict
 
 
 settings = EnvironmentSettings.new_instance().use_blink_planner().build()
