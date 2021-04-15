@@ -1,5 +1,7 @@
-from batch_prediction import predict
+from udf_def import predict
 
 
 def test_predict():
-    pass
+    f = predict._func
+    pred = f(1, 2)
+    assert type(pred) is float
