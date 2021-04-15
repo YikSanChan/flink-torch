@@ -5,7 +5,7 @@ I want to explore if we can leverage PyFlink to run ML batch prediction performa
 ## What're the files?
 
 - `ml-100k/`: [Movielens 100K](https://grouplens.org/datasets/movielens/100k/) dataset. It is pretty much the "Hello world" in recsys world.
-- `model-def.py`: A naive Matrix Factorization implementation, shamelessly copied from [Kaggle](https://www.kaggle.com/shihabshahriar/pytorch-movielens/data), and polished following [PyTorch quickstart](https://github.com/pytorch/tutorials/blob/master/beginner_source/basics/quickstart_tutorial.py).
+- `model_def.py`: A naive Matrix Factorization implementation, shamelessly copied from [Kaggle](https://www.kaggle.com/shihabshahriar/pytorch-movielens/data), and polished following [PyTorch quickstart](https://github.com/pytorch/tutorials/blob/master/beginner_source/basics/quickstart_tutorial.py).
 - `pytorch_movielens.py`: It trains the model, saves it, loads it back and runs a prediction.
 - `model.pth`: A saved model from running `pytorch_movielens.py`.
 - `udf_def.py`: PyFlink UDF that loads the model againsts which it runs batch prediction.
