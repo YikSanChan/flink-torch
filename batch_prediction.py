@@ -8,16 +8,14 @@ from model_def import MatrixFactorization
 
 # Load model
 
-n_users, n_items = 943, 1682
-model = MatrixFactorization(n_users, n_items)
-model.load_state_dict(torch.load("model.pth"))
-print(model)
-
 # Define UDF
-
 
 @udf(result_type=DataTypes.DOUBLE())
 def predict(user, item):
+    n_users, n_items = 943, 1682
+    model = MatrixFactorization(n_users, n_items)
+    model.load_state_dict(torch.load("model.pth"))
+    # print(model)
     return model([user], [item]).item()
 
 
