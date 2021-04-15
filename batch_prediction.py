@@ -26,7 +26,8 @@ CREATE TABLE source (
 
 SINK_DDL = """
 CREATE TABLE sink (
-    prediction DOUBLE
+    user_id INT,
+    topk_movies STRING
 ) WITH (
     'connector' = 'print'
 )
@@ -34,8 +35,22 @@ CREATE TABLE sink (
 
 TRANSFORM_DML = """
 INSERT INTO sink
-SELECT PREDICT(user_id, movie_id)
-FROM source
+WITH t1 AS (
+    SELECT user_id, movie_id, PREDICT(user_id, movie_id) predicted_rating
+    FROM source
+),
+t2 AS (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY predicted_rating DESC) as row_num
+    FROM t1
+),
+topk AS (
+    SELECT user_id, movie_id
+    FROM t2
+    WHERE row_num <= 5
+)
+SELECT user_id, LISTAGG(CAST(movie_id AS STRING)) topk_movies
+FROM topk
+GROUP BY user_id
 """
 
 t_env.execute_sql(SOURCE_DDL)
