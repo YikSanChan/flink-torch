@@ -24,3 +24,29 @@ Steps:
 5> +U(269,316,486,664,729,1020)
 5> +U(270,77,83,306,800,1014)
 ```
+
+## Beyond local
+
+Note all commands are run under the root path of the project.
+
+bundle your resources
+
+```
+zip -r resources.zip resources
+```
+
+bundle your conda env
+
+```
+(cd /usr/local/anaconda3/envs/flink-ml && zip -r - .) > flink-ml.zip
+```
+
+submit
+
+```
+~/softwares/flink-1.12.0/bin/flink run -d \
+-pyexec flink-ml/bin/python \
+-pyarch resources.zip,flink-ml.zip#flink-ml \
+-pyfs udf_def.py,model_def.py \
+-py batch_prediction.py
+```
