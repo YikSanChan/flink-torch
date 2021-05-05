@@ -11,7 +11,7 @@ class Predict(ScalarFunction):
     def open(self, function_context):
         n_users, n_items = 943, 1682
         model = MatrixFactorization(n_users, n_items)
-        model.load_state_dict(torch.load("model.pth"))
+        model.load_state_dict(torch.load("resources/model.pth"))
         model.eval()
         self.model = model
 
