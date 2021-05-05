@@ -20,7 +20,7 @@ CREATE TABLE source (
     'connector' = 'filesystem',
     'format' = 'csv',
     'csv.field-delimiter' = '\t',
-    'path' = 'ml-100k/u1.test'
+    'path' = '/Users/chenyisheng/source/yiksanchan/flink-torch/ml-100k/u1.test'
 )
 """
 
@@ -55,4 +55,4 @@ GROUP BY user_id
 
 t_env.execute_sql(SOURCE_DDL)
 t_env.execute_sql(SINK_DDL)
-t_env.execute_sql(TRANSFORM_DML).wait()
+t_env.execute_sql(TRANSFORM_DML)
